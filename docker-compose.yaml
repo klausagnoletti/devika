@@ -16,6 +16,26 @@ services:
     networks:
       - devika-subnetwork
 
+  ollama-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ollama-webui
+    volumes:
+      - ~/container-data/open-webui:/app/backend/data
+    depends_on:
+      - ollama-service
+    ports:
+      - 8080:8080
+    environment:
+      - OLLAMA_BASE_URLS=http://ollama:11434
+      - ENV=dev
+      - WEBUI_AUTH=False
+      - WEBUI_NAME=valiantlynx AI
+      - WEBUI_URL=http://localhost:8080
+      - WEBUI_SECRET_KEY=t0p-s3cr3t
+    restart: unless-stopped
+    networks:
+      - devika-subnetwork
+
   devika-backend-engine:
     build:
       context: .
